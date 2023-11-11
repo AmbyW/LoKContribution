@@ -150,25 +150,27 @@
             let data = {"lands":[{"color":"#7F0cA7b","contribution":14.175000000000011,"land":143870,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":1},{"color":"#7F0cA7b","contribution":14.175000000000011,"land":143871,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":2},{"color":"#7F0cA7b","contribution":14.175000000000011,"land":143872,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":3},{"color":"#7F0cA7b","contribution":46.17499999999997,"land":144126,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":4},{"color":"#7F0cA7b","contribution":113.40000000000009,"land":144127,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":5},{"color":"#7F0cA7b","contribution":14.175000000000011,"land":144128,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":6},{"color":"#7F0cA7b","contribution":14.175000000000011,"land":144382,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":7},{"color":"#7F0cA7b","contribution":34.175000000000004,"land":144383,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":8},{"color":"#7F0cA7b","contribution":14.175000000000011,"land":144384,"owner":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be","position":9}],"owners":[{"contribution":278.8000000000001,"wallet":"0x7F0cA7bc35a0B45E25055fC1775631ADE7c082be"}]}
 
             const paint_blocks = function (data) {
-                $("#lands").removeClass("d-none");
-                $("#lands .card").each(function (index) {
-                    let founded = false;
-                    for (let land of data) {
-                        if (land.position === parseInt(this.id)) {
-                            $(this).find("strong").text(land.land);
-                            $(this).find("span").text(land.contribution.toFixed(4));
-                            $(this).css("background-color", land.color);
-                            founded = true;
-                            break;
+                if (data) {
+                    $("#lands").removeClass("d-none");
+                    $("#lands .card").each(function (index) {
+                        let founded = false;
+                        for (let land of data) {
+                            if (land.position === parseInt(this.id)) {
+                                $(this).find("strong").text(land.land);
+                                $(this).find("span").text(land.contribution.toFixed(4));
+                                $(this).css("background-color", land.color);
+                                founded = true;
+                                break;
+                            }
                         }
-                    }
-                    if(!founded) {
-                        $(this).find("strong").text(" 000 ");
-                        $(this).find("span").text(" 00");
-                        $(this).css("background-color", "grey");
-                        $(this).css("color", "grey");
-                    }
-                })
+                        if(!founded) {
+                            $(this).find("strong").text(" 000 ");
+                            $(this).find("span").text(" 00");
+                            $(this).css("background-color", "grey");
+                            $(this).css("color", "grey");
+                        }
+                    })
+                }
             }
             const full_table = function (data) {
 
@@ -245,13 +247,18 @@
                 }
                 let data = [];
                 form.find('input,select').each(function() {
-                    data.push({name: this.name, value: this.checked});
+                    if (this.type === 'checkbox')
+                        data.push({name: this.name, value: this.checked});
+                    else
+                        data.push({name: this.name, value: this.value});
                 });
                 enable_spinner();
-                form.ajaxSubmit({
+                $.ajax({
                     type: "GET",
+                    url: '/get_contribution',
                     data: data,
                     success: function (response) {
+                        console.log(response)
                         disable_spinner();
                         paint_blocks(response.lands);
                         full_table(response);
