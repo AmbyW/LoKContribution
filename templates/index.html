@@ -65,7 +65,7 @@
                         </div>
                         <div class="col-12 mt-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="adjacent_lands" name="adjacent_lands">
+                                <input class="form-check-input" type="checkbox" value="" id="adjacent_lands" name="adjacent_lands" checked>
                                 <label class="form-check-label" for="adjacent_lands">
                                     Agregar Datos de tierras adyacentes
                                 </label>
@@ -209,10 +209,12 @@
 
             let form = $("#getcontribution-form");
             $("#from").datepicker({
-              format: 'yyyy-mm-dd',
+                format: 'yyyy-mm-dd',
+                endDate: "today",
             });
             $("#to").datepicker({
-              format: 'yyyy-mm-dd',
+                format: 'yyyy-mm-dd',
+                endDate: "today",
             });
             form.validate({
                 errorClass: 'text-danger',
@@ -241,23 +243,21 @@
                 if (!form.valid()) {
                     return;
                 }
-                console.log("es validoooooooo")
+                let data = [];
+                form.find('input,select').each(function() {
+                    data.push({name: this.name, value: this.checked});
+                });
                 enable_spinner();
                 form.ajaxSubmit({
                     type: "GET",
-                    data: {
-                        kingdom_name: $("#kingdom_name").val(),
-                        land_id: $("#land_id").val(),
-                        from: $("#from").val(),
-                        to: $("#to").val(),
-                    },
+                    data: data,
                     success: function (response) {
                         disable_spinner();
                         paint_blocks(response.lands);
                         full_table(response);
                     },
                     error: function (errors) {
-                        console.log(erros);
+                        console.log(errors);
                         disable_spinner();
                     }
                 })
