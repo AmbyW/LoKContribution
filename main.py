@@ -58,19 +58,19 @@ def make_urls(land_number, from_date, to_date):
 def get_lands_data(urls):
     responses = []
     for url in urls:
-        response = requests.get(url["url"])
+        response = requests.get(url.get('url', ''))
         if response.ok:
             content = json.loads(response.content.decode('utf-8'))
-            if content["result"]:
-                content["land_id"] = url["id"]
+            if content.get('result', False):
+                content['land_id'] = url.get('id', 0)
                 responses.append(content)
     return responses
 
 
 def get_land_contribution(data, kingdom_name):
     for kingdom in data:
-        if kingdom["name"] == kingdom_name:
-            return kingdom["total"]
+        if kingdom['name'] == kingdom_name:
+            return kingdom.get('total', 0)
     return 0
 
 
@@ -79,25 +79,26 @@ def process_lands_data(responses, urls, kingdom_name):
     owners = []
     for data in responses:
         exists_owner = False
+        wallet = data.get('land_id', 0)
         land = {
-            "land": data["land_id"],
-            "owner": data["owner"],
-            "color": data["owner"][:8].replace("0x", "#"),
-            "contribution": get_land_contribution(data["contribution"], kingdom_name),
+            'land': data.get('land_id', 0),
+            'owner': wallet,
+            'color': wallet[:8].replace('0x', '#'),
+            'contribution': get_land_contribution(data.get('contribution', []), kingdom_name),
         }
         for url in urls:
-            if land["land"] == url["id"]:
-                land["position"] = url["position"]
+            if land['land'] == url.get('id', 0):
+                land['position'] = url.get('position', )
         lands.append(land)
         for owner in owners:
             exists_owner = False
-            if land["owner"] == owner["wallet"]:
-                owner["contribution"] += land["contribution"]
+            if land['owner'] == owner.get('wallet', None):
+                owner['contribution'] += land.get('contribution', 0)
                 exists_owner = True
                 break
         if not exists_owner:
-            owners.append({"wallet": land["owner"], "contribution": land["contribution"]})
-    return {"lands": lands, "owners": owners}
+            owners.append({'wallet': land.get('owner', None), 'contribution': land.get('contribution', 0)})
+    return {'lands': lands, 'owners': owners}
 
 
 flask_app = Flask(__name__)
@@ -105,12 +106,10 @@ flask_app = Flask(__name__)
 
 @flask_app.route('/get_contribution', methods=['GET'])
 def get_contribution():
-    kingdom = request.args.get("kingdom_name")
-    land = request.args.get("land_id")
-    from_date = request.args.get("from")
-    to_date = request.args.get("to")
-    # print(kingdom, land, from_date, to_date)
-    # response = {"mssage": "todo ok"}
+    kingdom = request.args.get('kingdom_name')
+    land = request.args.get('land_id')
+    from_date = request.args.get('from')
+    to_date = request.args.get('to')
     urls = make_urls(land, from_date, to_date)
     responses = get_lands_data(urls)
     response = process_lands_data(responses, urls, kingdom)
