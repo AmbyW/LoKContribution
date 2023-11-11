@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>LoK Contribution</title>
+    <link rel="icon" type="image/png" sizes="96x96" href="https://www.leagueofkingdoms.com/favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -15,33 +16,60 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js" integrity="sha512-XZEy8UQ9rngkxQVugAdOuBRDmJ5N4vCuNXCh8KlniZgDKTvf7zl75QBtaVG1lEhMFe2a2DuA22nZYY+qsI2/xA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/localization/messages_es.min.js" integrity="sha512-Ou4GV0BYVfilQlKiSHUNrsoL1nznkcZ0ljccGeWYSaK2CaVzof2XaZ5VEm5/yE/2hkzjxZngQHVwNUiIRE8yLw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</head>
-<body class="bg-info">
-    <div class="container">
+    <style>
+        body {
+            background-image: url("https://www.dropbox.com/scl/fi/8enbqi0sidipy9aenyy51/field.png?rlkey=nnlpit9gnyribniv5mnr775r1&raw=1");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
 
+            .col-md-10.offset-1 .card.mt-4 {
+                background-color: rgba(240, 248, 255, 0.65);
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row mb-5">
+            <div class="">
+                <a href="https://www.leagueofkingdoms.com">
+                    <img src="https://www.leagueofkingdoms.com/img/logo.png" width="20%" alt="League of Kingdoms Logo">
+                </a>
+            </div>
+        </div>
         <div class="col-md-10 offset-1">
             <div class="card mt-4">
                 <form action="/get_contribution" method="get" id="getcontribution-form">
-                    <div class="card-header">
+                    <div class="card-header text-center">
                         Datos para buscar la contribución
                     </div>
                     <div class="card-body">
                     <div class="row">
                         <div class="col-auto form-group">
-                            <label for="kingdom_name" >Nombre del Reino</label>
-                            <input type="text" class="form-control" id="kingdom_name" placeholder="Nombre del Reino">
+                            <label for="kingdom_name" >Nombre del Reino <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="kingdom_name" placeholder="Nombre del Reino" name="kingdom_name">
                         </div>
                         <div class="col-auto form-group">
-                            <label for="land_id" >ID de la Tierra</label>
-                            <input type="text" class="form-control" id="land_id" placeholder="ID de la Tierra">
+                            <label for="land_id" >ID de la Tierra <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="land_id" placeholder="ID de la Tierra" name="land_id">
                         </div>
                         <div class="col-auto form-group">
-                            <label for="from" >Desde</label>
-                            <input type="text" class="form-control" id="from" placeholder="Desde">
+                            <label for="from" >Desde <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="from" placeholder="Desde" name="from">
                         </div>
                         <div class="col-auto form-group">
-                            <label for="to" >Hasta</label>
-                            <input type="text" class="form-control" id="to" placeholder="Hasta">
+                            <label for="to" >Hasta <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="to" placeholder="Hasta" name="to">
+                        </div>
+                        <div class="col-12 mt-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="adjacent_lands" name="adjacent_lands">
+                                <label class="form-check-label" for="adjacent_lands">
+                                    Agregar Datos de tierras adyacentes
+                                </label>
+                            </div>
                         </div>
                     </div>
                     </div>
@@ -187,6 +215,7 @@
               format: 'yyyy-mm-dd',
             });
             form.validate({
+                errorClass: 'text-danger',
                 rules: {
                     'kingdom_name': {
                         required: true,
