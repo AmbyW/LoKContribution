@@ -51,13 +51,13 @@ def get_adyacent_lands(land_number, adjacent_lands):
 def get_date_ranges(from_date, to_date):
     date_starts = datetime.datetime.strptime(from_date, '%Y-%m-%d')
     date_ends = datetime.datetime.strptime(to_date, '%Y-%m-%d')
-    date_range = abs(date_starts - date_ends)
+    date_range = abs(date_starts - date_ends) + datetime.timedelta(days=1)
     if date_range.days < 7:
         return [(from_date, to_date),]
     range_date_days = date_range.days
     date_list = []
     while range_date_days > 0:
-        next_days = 6 if range_date_days >= 7 else range_date_days
+        next_days = 7 if range_date_days >= 7 else range_date_days
         range_date_days -= next_days
         date_list.append((date_starts.strftime('%Y-%m-%d'),
                           (date_starts + datetime.timedelta(days=next_days - 1)).strftime('%Y-%m-%d')))
@@ -83,11 +83,13 @@ def get_lands_data(urls):
         print('requesting url: ', url.get('url', ''))
         response = requests.get(url.get('url', ''))
         print('response in: ', time.time() - time2)
+        print(response.ok, response.json())
         if response.ok:
             content = json.loads(response.content.decode('utf-8'))
-            if content.get('result', False):
-                content['land_id'] = url.get('id', 0)
-                responses.append(content)
+            content['land_id'] = url.get('id', 0)
+            responses.append(content)
+
+    print(responses)
     return responses
 
 
@@ -102,6 +104,7 @@ def process_lands_data(responses, urls, kingdom_name):
     lands = []
     owners = []
     for data in responses:
+        print(data)
         exists_owner = False
         wallet = data.get('owner', '0x0000000000')
         land = {
@@ -151,4 +154,6 @@ if __name__ == '__main__':
     flask_app.run(host='0.0.0.0', port=5000, debug=True)
 
 
+date_s = '2023-11-28'
+date_e = '2023-11-21'
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
