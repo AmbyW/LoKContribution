@@ -3,6 +3,7 @@ import datetime
 import time
 import requests
 import json
+import threading
 from flask import Flask, render_template, request, jsonify
 
 
@@ -78,18 +79,26 @@ def make_urls(land_number, from_date, to_date, adjacent_lands=False):
 
 def get_lands_data(urls):
     responses = []
-    for url in urls:
-        time2 = time.time()
-        print('requesting url: ', url.get('url', ''))
+
+    def make_requests(url: dict):
         response = requests.get(url.get('url', ''))
-        print('response in: ', time.time() - time2)
-        print(response.ok, response.json())
         if response.ok:
             content = json.loads(response.content.decode('utf-8'))
             content['land_id'] = url.get('id', 0)
             responses.append(content)
 
-    print(responses)
+    threads_list = []
+    threads = len(urls)
+    for thread_number in range(threads):
+        thread = threading.Thread(name=f'requesting_url_no_{thread_number}',
+                                  target=make_requests,
+                                  args=(urls[thread_number], ))
+        threads_list.append(thread)
+        thread.start()
+
+    for thread in threads_list:
+        thread.join()
+
     return responses
 
 
