@@ -6,7 +6,6 @@ import json
 import threading
 from flask import Flask, render_template, request, jsonify
 
-
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 LOK_MAP = [i for i in range(100000, 165536)]
@@ -37,15 +36,15 @@ def get_adyacent_lands(land_number, adjacent_lands):
             if land_number > 100255:
                 down_land = land_number - 256
         return [
-                {"position": 1, "id": up_prev_land},
-                {"position": 2, "id": up_land},
-                {"position": 3, "id": up_next_land},
-                {"position": 4, "id": prev_land},
-                {"position": 5, "id": land_number},
-                {"position": 6, "id": next_land},
-                {"position": 7, "id": down_prev_land},
-                {"position": 8, "id": down_land},
-                {"position": 9, "id": down_next_land},
+            {"position": 1, "id": up_prev_land},
+            {"position": 2, "id": up_land},
+            {"position": 3, "id": up_next_land},
+            {"position": 4, "id": prev_land},
+            {"position": 5, "id": land_number},
+            {"position": 6, "id": next_land},
+            {"position": 7, "id": down_prev_land},
+            {"position": 8, "id": down_land},
+            {"position": 9, "id": down_next_land},
         ]
 
 
@@ -54,7 +53,7 @@ def get_date_ranges(from_date, to_date):
     date_ends = datetime.datetime.strptime(to_date, '%Y-%m-%d')
     date_range = abs(date_starts - date_ends) + datetime.timedelta(days=1)
     if date_range.days < 7:
-        return [(from_date, to_date),]
+        return [(from_date, to_date), ]
     range_date_days = date_range.days
     date_list = []
     while range_date_days > 0:
@@ -92,7 +91,7 @@ def get_lands_data(urls):
     for thread_number in range(threads):
         thread = threading.Thread(name=f'requesting_url_no_{thread_number}',
                                   target=make_requests,
-                                  args=(urls[thread_number], ))
+                                  args=(urls[thread_number],))
         threads_list.append(thread)
         thread.start()
 
@@ -110,31 +109,42 @@ def get_land_contribution(data, kingdom_name):
 
 
 def process_lands_data(responses, urls, kingdom_name):
-    lands = []
-    owners = []
+    lands_contributions = {}
+    owner_contributions = {}
     for data in responses:
         print(data)
-        exists_owner = False
-        wallet = data.get('owner', '0x0000000000')
-        land = {
-            'land': data.get('land_id', 0),
-            'owner': wallet,
-            'color': wallet[:8].replace('0x', '#'),
-            'contribution': get_land_contribution(data.get('contribution', []), kingdom_name),
-        }
-        for url in urls:
-            if land['land'] == url.get('id', 0):
-                land['position'] = url.get('position', )
-        lands.append(land)
-        for owner in owners:
-            exists_owner = False
-            if land['owner'] == owner.get('wallet', None):
-                owner['contribution'] += land.get('contribution', 0)
-                exists_owner = True
-                break
-        if not exists_owner:
-            owners.append({'wallet': land.get('owner', None), 'contribution': land.get('contribution', 0)})
-    return {'lands': lands, 'owners': owners}
+        if data.get('result', False):
+            contribution = get_land_contribution(data.get('contribution', []), kingdom_name)
+            wallet = data.get('owner', '0x0000000000')
+            land = lands_contributions.get(data.get('land_id'), {
+                'contribution': 0,
+                'land': data.get('land_id', 0),
+                'owner': wallet,
+                'color': wallet[:8].replace('0x', '#'),
+            })
+            land['contribution'] += contribution
+            if not land.get('position'):
+                for url in urls:
+                    if land['land'] == url.get('id', 0):
+                        land['position'] = url.get('position', )
+                        break
+            lands_contributions[data.get('land_id')] = land
+            owner_contributions[wallet] = owner_contributions.get(wallet, 0) + contribution
+        else:
+            land = lands_contributions.get(data.get('land_id'), {
+                'contribution': 0,
+                'land': data.get('land_id', 0),
+                'owner': 'No Owner' if data.get('err', {}).get('code', '') == 'no_land_owner' else data.get('error', {}).get('code', ''),
+                'color': '#bd6c1e' if data.get('err', {}).get('code', '') == 'no_land_owner' else '#FFFFFF00',
+            })
+            if not land.get('position'):
+                for url in urls:
+                    if land['land'] == url.get('id', 0):
+                        land['position'] = url.get('position', )
+                        break
+            lands_contributions[data.get('land_id')] = land
+    return {'lands': [land for land in lands_contributions.values()],
+            'owners': [{'wallet': key, 'contribution': value} for key, value in owner_contributions.items()] }
 
 
 flask_app = Flask(__name__)
@@ -161,7 +171,6 @@ def index():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     flask_app.run(host='0.0.0.0', port=5000, debug=True)
-
 
 date_s = '2023-11-28'
 date_e = '2023-11-21'
