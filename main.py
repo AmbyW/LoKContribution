@@ -1,6 +1,5 @@
 # This is a sample Python script.
 import datetime
-import time
 import requests
 import json
 import threading
@@ -172,6 +171,4 @@ def index():
 if __name__ == '__main__':
     flask_app.run(host='0.0.0.0', port=5000, debug=True)
 
-date_s = '2023-11-28'
-date_e = '2023-11-21'
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
