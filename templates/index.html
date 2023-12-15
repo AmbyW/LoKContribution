@@ -273,6 +273,26 @@
                 format: 'yyyy-mm-dd',
                 endDate: "today",
             });
+            $.validator.addMethod("greaterThan",
+                function(value, element, params) {
+
+                    if (!/Invalid|NaN/.test(new Date(value))) {
+                        return new Date(value) >= new Date($(params).val());
+                    }
+
+                    return isNaN(value) && isNaN($(params).val())
+                        || (Number(value) >= Number($(params).val()));
+            },'Must be greater than to date');
+            $.validator.addMethod("lowerThan",
+                function(value, element, params) {
+
+                    if (!/Invalid|NaN/.test(new Date(value))) {
+                        return new Date(value) <= new Date($(params).val());
+                    }
+
+                    return isNaN(value) && isNaN($(params).val())
+                        || (Number(value) <= Number($(params).val()));
+            },'Must be greater than from date');
             form.validate({
                 errorClass: 'text-danger',
                 rules: {
@@ -289,8 +309,10 @@
                     },
                     'from': {
                         required: true,
+                        lowerThan: '#to',
                     },
                     'to': {
+                        greaterThan: '#from',
                         required: true,
                     },
                 },
