@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  cont_app:
+    networks:
+      - app_network
+    extends:
+            file: ./docker-compose-core.yml
+            service: cont_app
+
+networks:
+  app_network:
+    driver: bridge

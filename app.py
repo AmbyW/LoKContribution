@@ -111,7 +111,6 @@ def process_lands_data(responses, urls, kingdom_name):
     lands_contributions = {}
     owner_contributions = {}
     for data in responses:
-        print(data)
         if data.get('result', False):
             contribution = get_land_contribution(data.get('contribution', []), kingdom_name)
             wallet = data.get('owner', '0x0000000000')

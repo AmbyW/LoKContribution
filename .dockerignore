@@ -1,0 +1,39 @@
+# Python, python cache, pip related files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Test and configuration related files
+.tox
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+.pytest_cache
+.hypothesis
+tests/
+
+# Cache Files
+.cache
+.mypy_cache
+
+# Logginf files
+*.log
+
+# Git related files
+.git
+.gitignore
+
+# Environment related files
+env
+venv/
+.env
+
+# Documentation files
+README.md
+

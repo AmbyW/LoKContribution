@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+
+    cont_app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        container_name: cont_app
+        environment:
+            - FLASK_APP=app.py
+            - FLASK_ENV=production
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: "10"
+                labels: "lok-contribution-app"
