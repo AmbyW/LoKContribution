@@ -303,6 +303,21 @@
                     return isNaN(value) && isNaN($(params).val())
                         || (Number(value) <= Number($(params).val()));
             },'Must be greater than from date');
+            $.validator.addMethod("DatesDifference31",
+            function (value, element, params) {
+
+                    if (!/Invalid|NaN/.test(new Date(value)) && $(params).val()) {
+                        let date1 = new Date(value);
+                        let date2 = new Date($(params).val());
+                        const difference = Math.abs(date1 - date2);
+                        const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
+                        return  daysDifference <= 31;
+                    }
+
+                    return isNaN(value) && isNaN($(params).val())
+                        || (Number(value) <= Number($(params).val()));
+
+            }, 'Dates difference should be lower or equal to 31 days');
             form.validate({
                 errorClass: 'text-danger',
                 rules: {
@@ -320,9 +335,11 @@
                     'from': {
                         required: true,
                         lowerThan: '#to',
+                        DatesDifference31: '#to',
                     },
                     'to': {
                         greaterThan: '#from',
+                        DatesDifference31: '#from',
                         required: true,
                     },
                 },
