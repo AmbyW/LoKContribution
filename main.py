@@ -3,7 +3,7 @@ import datetime
 import requests
 import json
 import threading
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -160,6 +160,11 @@ def get_contribution():
     responses = get_lands_data(urls)
     response = process_lands_data(responses, urls, kingdom)
     return jsonify(response), 200
+
+
+@flask_app.route('/assets/<path:path>', methods=['GET'])
+def send_assets(path):
+    return send_from_directory('static', path)
 
 
 @flask_app.route('/', methods=['GET'])
