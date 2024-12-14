@@ -81,6 +81,31 @@ $(document).ready(function() {
         });
     }
 
+    const show_alert = function (title) {
+        const topRightAlertConfig = {
+            toast: true,            // Makes the alert a toast-style notification
+            position: 'top-end',    // Positions the alert at the top-right
+            showConfirmButton: false, // Hides the confirm button
+            timer: 3000,            // Automatically closes after 3 seconds
+            timerProgressBar: true, // Shows a progress bar
+            width: '400px',         // Sets a specific width for the alert
+            padding: '0.5rem',      // Adds some padding
+            customClass: {
+                popup: 'small-alert-popup',  // Custom class for additional styling
+                title: 'small-alert-title',  // Custom class for the title
+            },
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        }
+        Swal.fire({
+            ...topRightAlertConfig,
+            icon: "success",
+            title: title,
+        });
+    }
+
     const submit_button = $("#form_submit");
     const submit_spinner = $("#form_spinner")
     const enable_spinner = function () {
@@ -201,7 +226,8 @@ $(document).ready(function() {
             success: function (response) {
                 disable_spinner();
                 server_data = response;
-                console.log(response)
+                console.log(response);
+                show_alert("Data fetched successfully, please select a kingdom name from the list to check the contribution")
                 fill_kingdom_name_select(response.kingdoms)
             },
             error: function (errors) {
