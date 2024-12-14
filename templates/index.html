@@ -6,16 +6,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="https://www.leagueofkingdoms.com/favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css" integrity="sha512-YdYyWQf8AS4WSB0WWdc3FbQ3Ypdm0QCWD2k4hgfqbQbRCJBEgX0iAegkl2S1Evma5ImaVXLBeUkIlP6hQ1eYKQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" defer integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.11/jsrender.min.js" defer integrity="sha512-bKlNlbTH3duwZ28zoqEhXui/yuaPuQVci6OAVu0zh2WfYbEKD39HszVR8byP4/L4YyBo3b5CGIY+4ldVN93uCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" defer integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" defer integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js" integrity="sha512-XZEy8UQ9rngkxQVugAdOuBRDmJ5N4vCuNXCh8KlniZgDKTvf7zl75QBtaVG1lEhMFe2a2DuA22nZYY+qsI2/xA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/localization/messages_es.min.js" integrity="sha512-Ou4GV0BYVfilQlKiSHUNrsoL1nznkcZ0ljccGeWYSaK2CaVzof2XaZ5VEm5/yE/2hkzjxZngQHVwNUiIRE8yLw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             background-image: url("/assets/img/field.png");
@@ -46,42 +37,48 @@
             <div class="card mt-4">
                 <form action="/get_contribution" method="get" id="getcontribution-form">
                     <div class="card-header text-center">
-                        Datos para buscar la contribución
+                        Find your contribution
                     </div>
                     <div class="card-body">
-                    <div class="row">
-                        <div class="col-auto form-group">
-                            <label for="kingdom_name" >Nombre del Reino <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="kingdom_name" placeholder="Nombre del Reino" name="kingdom_name">
-                        </div>
-                        <div class="col-auto form-group">
-                            <label for="land_id" >ID de la Tierra <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="land_id" placeholder="ID de la Tierra" name="land_id">
-                        </div>
-                        <div class="col-auto form-group">
-                            <label for="from" >Desde <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="from" placeholder="Desde" name="from">
-                        </div>
-                        <div class="col-auto form-group">
-                            <label for="to" >Hasta <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="to" placeholder="Hasta" name="to">
-                        </div>
-                        <div class="col-12 mt-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="adjacent_lands" name="adjacent_lands" checked>
-                                <label class="form-check-label" for="adjacent_lands">
-                                    Agregar Datos de tierras adyacentes
-                                </label>
+                        <div class="row">
+                            <div class="col-auto form-group">
+                                <label for="land_id" >Land ID <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="land_id" placeholder="ID de la Tierra" name="land_id">
+                            </div>
+                            <div class="col-auto form-group">
+                                <label for="from" >From <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="from" placeholder="Desde" name="from">
+                            </div>
+                            <div class="col-auto form-group">
+                                <label for="to" >To <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="to" placeholder="Hasta" name="to">
+                            </div>
+                            <div class="col-12 mt-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="adjacent_lands" name="adjacent_lands" >
+                                    <label class="form-check-label" for="adjacent_lands">
+                                        Add adjacent lands data
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    </div>
                     <div class="card-footer text-center">
-                        <button id="form_submit" type="submit" class="btn btn-primary mb-3">Ver contribución</button>
+                        <button id="form_submit" type="submit" class="btn btn-primary mb-3">Check Contribution</button>
                         <button id="form_spinner" class="btn btn-primary mb-3 d-none" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Cargando datos...
+                            Fetching data...
                         </button>
+                    </div>
+                    <div class="card-footer text-center d-none" id="kingdom_select">
+                        <div class="row">
+                            <div class="col-auto form-group mt-4 mb-4 text-center">
+                                <label for="kingdom_name" >Kingdom Name</label>
+                                <select type="text" class="form-control" id="kingdom_name" placeholder="Kingdom Name" name="kingdom_name">
+                                    <option value="">No kingdom name selected</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -206,175 +203,17 @@
             <span class="text-dark font-weight-bold">Made with &#129392;. Fork me or/and ⭐ me on &#128073; <a href="https://github.com/AmbyW/LoKContribution" class="text-danger">GitHub</a> </span>
         </div>
     </footer>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            const paint_blocks = function (data) {
-                if (data) {
-                    $("#lands").removeClass("d-none");
-                    $("#lands .card").each(function (index) {
-                        let founded = false;
-                        for (let land of data) {
-                            if (land.position === parseInt(this.id)) {
-                                $(this).find("strong").text(land.land);
-                                if (land.owner === "No Owner")
-                                    $(this).find("span").text(land.owner);
-                                else
-                                    $(this).find("span").text(land.contribution.toFixed(4));
-                                $(this).css("background-color", land.color);
-                                founded = true;
-                                $(this).css("color", "black");
-                                $(this).find("img.mr-3").removeClass("d-none");
-                                break;
-                            }
-                        }
-                        if(!founded) {
-                            $(this).find("strong").text(" 000 ");
-                            $(this).find("span").text(" 00");
-                            $(this).css("background-color", "grey");
-                            $(this).css("color", "grey");
-                            $(this).find("img.mr-3").addClass("d-none");
-                        }
-                    })
-                }
-            }
-            const full_table = function (data) {
 
-                let html_table = '{% raw %}' +
-                    '                   <table class="table table-success table-hover table-striped table-bordered">\n' +
-                    '                        <thead>\n' +
-                    '                            <tr>\n' +
-                    '                                <th scope="col text-center">Owner</th>\n' +
-                    '                                <th scope="col text-center">Contribution</th>\n' +
-                    '                            </tr>\n' +
-                    '                        </thead>\n' +
-                    '                        <tbody>\n' +
-                    '                            {{for owners}}' +
-                    '                            <tr>\n' +
-                    '                                <td>{{>wallet}}</td>\n' +
-                    '                                <td>{{>contribution}} dvp</td>\n' +
-                    '                            </tr>\n' +
-                    '                            {{/for}}' +
-                    '                        </tbody>\n' +
-                    '                    </table>' +
-                    '{% endraw %}';
-                let tmpl = $.templates(html_table);
-                let html_rendered = tmpl.render(data);
-                $("#owners").removeClass("d-none");
-                $("#owners .table-responsive").html(html_rendered);
-            }
-
-            const submit_button = $("#form_submit");
-            const submit_spinner = $("#form_spinner")
-            const enable_spinner = function () {
-                submit_button.addClass("d-none");
-                submit_spinner.removeClass("d-none");
-            }
-            const disable_spinner = function () {
-                submit_button.removeClass("d-none");
-                submit_spinner.addClass("d-none");
-            }
-
-            let form = $("#getcontribution-form");
-            $("#from").datepicker({
-                format: 'yyyy-mm-dd',
-                endDate: "today",
-            });
-            $("#to").datepicker({
-                format: 'yyyy-mm-dd',
-                endDate: "today",
-            });
-            $.validator.addMethod("greaterThan",
-                function(value, element, params) {
-
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return new Date(value) >= new Date($(params).val());
-                    }
-
-                    return isNaN(value) && isNaN($(params).val())
-                        || (Number(value) >= Number($(params).val()));
-            },'Must be greater than to date');
-            $.validator.addMethod("lowerThan",
-                function(value, element, params) {
-
-                    if (!/Invalid|NaN/.test(new Date(value))) {
-                        return new Date(value) <= new Date($(params).val());
-                    }
-
-                    return isNaN(value) && isNaN($(params).val())
-                        || (Number(value) <= Number($(params).val()));
-            },'Must be greater than from date');
-            $.validator.addMethod("DatesDifference31",
-            function (value, element, params) {
-
-                    if (!/Invalid|NaN/.test(new Date(value)) && $(params).val()) {
-                        let date1 = new Date(value);
-                        let date2 = new Date($(params).val());
-                        const difference = Math.abs(date1 - date2);
-                        const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
-                        return  daysDifference <= 31;
-                    }
-
-                    return isNaN(value) && isNaN($(params).val())
-                        || (Number(value) <= Number($(params).val()));
-
-            }, 'Dates difference should be lower or equal to 31 days');
-            form.validate({
-                errorClass: 'text-danger',
-                rules: {
-                    'kingdom_name': {
-                        required: true,
-                    },
-                    'land_id': {
-                        required: true,
-                        digits: true,
-                        min: 100000,
-                        max: 165535,
-                        maxlength: 6,
-                        minlength: 6,
-                    },
-                    'from': {
-                        required: true,
-                        lowerThan: '#to',
-                        DatesDifference31: '#to',
-                    },
-                    'to': {
-                        greaterThan: '#from',
-                        DatesDifference31: '#from',
-                        required: true,
-                    },
-                },
-            });
-            form.on("submit", function (e) {
-                e.preventDefault();
-                if (!form.valid()) {
-                    return;
-                }
-                let data = [];
-                form.find('input,select').each(function() {
-                    if (this.type === 'checkbox')
-                        data.push({name: this.name, value: this.checked});
-                    else
-                        data.push({name: this.name, value: this.value});
-                });
-                enable_spinner();
-                $.ajax({
-                    type: "GET",
-                    url: '/get_contribution',
-                    data: data,
-                    success: function (response) {
-                        console.log(response)
-                        disable_spinner();
-                        paint_blocks(response.lands);
-                        full_table(response);
-                    },
-                    error: function (errors) {
-                        console.log(errors);
-                        disable_spinner();
-                    }
-                })
-            })
-        })
-
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" defer integrity="sha512-YUkaLm+KJ5lQXDBdqBqk7EVhJAdxRnVdT2vtCzwPHSweCzyMgYV/tgGF4/dCyqtCC2eCphz0lRQgatGVdfR0ww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.11/jsrender.min.js" defer integrity="sha512-bKlNlbTH3duwZ28zoqEhXui/yuaPuQVci6OAVu0zh2WfYbEKD39HszVR8byP4/L4YyBo3b5CGIY+4ldVN93uCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" defer integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" defer integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/additional-methods.min.js" integrity="sha512-XZEy8UQ9rngkxQVugAdOuBRDmJ5N4vCuNXCh8KlniZgDKTvf7zl75QBtaVG1lEhMFe2a2DuA22nZYY+qsI2/xA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/localization/messages_es.min.js" integrity="sha512-Ou4GV0BYVfilQlKiSHUNrsoL1nznkcZ0ljccGeWYSaK2CaVzof2XaZ5VEm5/yE/2hkzjxZngQHVwNUiIRE8yLw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js" integrity="sha512-RCgrAvvoLpP7KVgTkTctrUdv7C6t7Un3p1iaoPr1++3pybCyCsCZZN7QEHMZTcJTmcJ7jzexTO+eFpHk4OCFAg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="/assets/js/lokContribution.js"></script>
 </body>
 </html>
