@@ -134,7 +134,6 @@ $(document).ready(function() {
     kingdom_select.on("change", function (e) {
         if (server_data) {
             let selected = $(this).val();
-            console.log("selected", selected);
             paint_blocks(server_data.lands, selected);
             full_table(server_data, selected);
         }
@@ -151,7 +150,9 @@ $(document).ready(function() {
         function(value, element, params) {
 
             if (!/Invalid|NaN/.test(new Date(value))) {
-                return new Date(value) >= new Date($(params).val());
+                if ($(params).val())
+                    return new Date(value) >= new Date($(params).val());
+                return true;
             }
 
             return isNaN(value) && isNaN($(params).val())
@@ -161,7 +162,9 @@ $(document).ready(function() {
         function(value, element, params) {
 
             if (!/Invalid|NaN/.test(new Date(value))) {
-                return new Date(value) <= new Date($(params).val());
+                if ($(params).val())
+                    return new Date(value) <= new Date($(params).val());
+                return true;
             }
 
             return isNaN(value) && isNaN($(params).val())
@@ -170,12 +173,15 @@ $(document).ready(function() {
     $.validator.addMethod("DatesDifference31",
     function (value, element, params) {
 
-            if (!/Invalid|NaN/.test(new Date(value)) && $(params).val()) {
-                let date1 = new Date(value);
-                let date2 = new Date($(params).val());
-                const difference = Math.abs(date1 - date2);
-                const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
-                return  daysDifference <= 31;
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                if ($(params).val()) {
+                    let date1 = new Date(value);
+                    let date2 = new Date($(params).val());
+                    const difference = Math.abs(date1 - date2);
+                    const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    return daysDifference <= 31;
+                }
+                return true;
             }
 
             return isNaN(value) && isNaN($(params).val())
@@ -226,7 +232,6 @@ $(document).ready(function() {
             success: function (response) {
                 disable_spinner();
                 server_data = response;
-                console.log(response);
                 show_alert("Data fetched successfully, please select a kingdom name from the list to check the contribution")
                 fill_kingdom_name_select(response.kingdoms)
             },
