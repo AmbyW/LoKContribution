@@ -154,10 +154,20 @@ def process_lands_data(responses, urls):
                     kingdoms[kingdom_name] = {"id": kingdom_id,
                                               "text": kingdom_name,
                                               "continent": kingdom_contribution.get("continent", 0), }
-                contribution = {"kingdomId": kingdom_id,
-                                "contribution": kingdom_contribution.get("total", 0)}
-                land["contributions"].append(contribution)
-                total = wallet_owner_contribution.get(kingdom_id, 0) + contribution["contribution"]
+                contribution = kingdom_contribution.get("total", 0)
+                contribution_founded = False
+                for land_kingdom_contribution in land["contributions"]:
+                    if land_kingdom_contribution["kingdomId"] == kingdom_id:
+                        land_kingdom_contribution["contribution"] += contribution
+                        contribution_founded = True
+                        break
+                if not contribution_founded:
+                    land_kingdom_contribution = {
+                        "kingdomId": kingdom_id,
+                        "contribution": contribution
+                    }
+                    land["contributions"].append(land_kingdom_contribution)
+                total = wallet_owner_contribution.get(kingdom_id, 0) + contribution
                 wallet_owner_contribution[kingdom_id] = total
 
             lands_contributions[data.get("land_id")] = land
@@ -199,7 +209,6 @@ flask_app = Flask(__name__)
 
 @flask_app.route("/get_contribution", methods=["GET"])
 def get_contribution():
-    kingdom = request.args.get("kingdom_name")
     land = request.args.get("land_id")
     from_date = request.args.get("from")
     to_date = request.args.get("to")
